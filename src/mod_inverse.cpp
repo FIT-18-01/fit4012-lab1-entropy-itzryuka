@@ -26,7 +26,17 @@ int extended_euclid(int a, int b, int &x, int &y) {
 }
 
 int mod_inverse(int a, int m) {
-    int x, y;
+    // 1. Xử lý ngoại lệ: m phải lớn hơn 1
+    if (m <= 1) {
+        return -1;
+    }
+
+    // 2. Chuẩn hóa a: Đảm bảo a luôn là số nguyên dương trong khoảng [0, m-1]
+    a = (a % m + m) % m;
+
+    // 3. Khởi tạo biến tường minh để tránh lỗi compiler
+    int x = 0, y = 0; 
+    
     int g = extended_euclid(a, m, x, y);
     
     // Nếu ước chung lớn nhất khác 1, không tồn tại nghịch đảo modulo
@@ -34,8 +44,7 @@ int mod_inverse(int a, int m) {
         return -1;
     }
     
-    // Xử lý trường hợp x bị âm bằng cách cộng thêm m, sau đó modulo m lần nữa
-    // Công thức (x % m + m) % m đảm bảo kết quả luôn nằm trong [0, m-1]
+    // Đảm bảo kết quả x trả về luôn dương
     return (x % m + m) % m;
 }
 
